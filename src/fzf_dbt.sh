@@ -277,24 +277,6 @@ _dbt_fzf_show_selectors() {
     )
 }
 
-# This is the actual function called to launch fzf when you type **<tab>
-_fzf_complete_dbt() {
-    local height=${FZF_DBT_HEIGHT-80%}
-    _fzf_complete \
-        --multi \
-        --reverse \
-        --prompt="dbt> " \
-        --bind=",:reload( source $FZF_DBT_PATH; _dbt_fzf_show_models )" \
-        --bind="<:reload( source $FZF_DBT_PATH; _dbt_fzf_show_models_plus )" \
-        --bind=".:reload( source $FZF_DBT_PATH; _dbt_fzf_show_selectors )" \
-        --header-lines=1 \
-        --preview "source $FZF_DBT_PATH;  _dbt_fzf_preview {}" \
-        --height $height \
-        -- "$@" \
-        < <( _dbt_fzf_show_models )
-}
-
-
 # This function generates the preview command inside fzt.
 #
 # You can adjust the command that will be used to output the model
@@ -370,3 +352,22 @@ _dbt_fzf_preview() {
     # Run the preview command
     zsh -c "$final_preview_cmd"
 }
+
+# This is the actual function called to launch fzf when you type **<tab>
+_fzf_complete_dbt() {
+    local height=${FZF_DBT_HEIGHT-80%}
+    _fzf_complete \
+        --multi \
+        --reverse \
+        --prompt="dbt> " \
+        --bind=",:reload( source $FZF_DBT_PATH; _dbt_fzf_show_models )" \
+        --bind="<:reload( source $FZF_DBT_PATH; _dbt_fzf_show_models_plus )" \
+        --bind=".:reload( source $FZF_DBT_PATH; _dbt_fzf_show_selectors )" \
+        --header-lines=1 \
+        --preview "source $FZF_DBT_PATH;  _dbt_fzf_preview {}" \
+        --height $height \
+        -- "$@" \
+        < <( _dbt_fzf_show_models )
+}
+
+
